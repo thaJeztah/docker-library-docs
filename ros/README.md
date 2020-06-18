@@ -14,6 +14,8 @@ WARNING:
 
 -->
 
+**Note:** this is the "per-architecture" repository for the `amd64` builds of [the `ros` official image](https://hub.docker.com/_/ros) -- for more information, see ["Architectures other than amd64?" in the official images documentation](https://github.com/docker-library/official-images#architectures-other-than-amd64) and ["An image's source changed in Git, now what?" in the official images FAQ](https://github.com/docker-library/faq#an-images-source-changed-in-git-now-what).
+
 # Quick reference
 
 -	**Maintained by**:  
@@ -54,6 +56,8 @@ WARNING:
 -	[`foxy-ros-base`, `foxy-ros-base-focal`, `foxy`, `latest`](https://github.com/osrf/docker_images/blob/03c81bdfa9d3b185ac009d9a8ecea26ccd85e179/ros/foxy/ubuntu/focal/ros-base/Dockerfile)
 -	[`foxy-ros1-bridge`, `foxy-ros1-bridge-focal`](https://github.com/osrf/docker_images/blob/c71d7177eaad534e42307b4e7ab7e30078c884de/ros/foxy/ubuntu/focal/ros1-bridge/Dockerfile)
 
+[![amd64/ros build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/amd64/job/ros.svg?label=amd64/ros%20%20build%20job)](https://doi-janky.infosiftr.net/job/multiarch/job/amd64/job/ros/)
+
 # Quick reference (cont.)
 
 -	**Where to file issues**:  
@@ -88,7 +92,7 @@ The Robot Operating System (ROS) is a set of software libraries and tools that h
 To create your own ROS docker images and install custom packages, here's a simple example of installing the C++, Python client library demos using the official released Debian packages via apt-get.
 
 ```dockerfile
-FROM ros:foxy
+FROM amd64/ros:foxy
 
 # install ros package
 RUN apt-get update && apt-get install -y \
@@ -119,7 +123,7 @@ $ docker run -it --rm my/ros:app
 To create your own ROS docker images and build custom packages, here's a simple example of installing a package's build dependencies, compiling it from source, and installing the resulting build artifacts into a final multi-stage image layer.
 
 ```dockerfile
-ARG FROM_IMAGE=ros:foxy
+ARG FROM_IMAGE=amd64/ros:foxy
 ARG OVERLAY_WS=/opt/ros/overlay_ws
 
 # multi-stage for caching
@@ -215,7 +219,7 @@ ROS uses the `~/.ros/` directory for storing logs, and debugging info. If you wi
 For example, if one wishes to use their own `.ros` folder that already resides in their local home directory, with a username of `ubuntu`, we can simple launch the container with an additional volume argument:
 
 ```console
-$ docker run -v "/home/ubuntu/.ros/:/root/.ros/" ros
+$ docker run -v "/home/ubuntu/.ros/:/root/.ros/" amd64/ros
 ```
 
 ### Devices
@@ -283,7 +287,7 @@ $ docker-compose rm
 +To ease ROS2 migration, [`ros1_bridge`](https://index.ros.org/p/ros1_bridge/github-ros2-ros1_bridge) is a ROS2 package that provides bidirectional communication between ROS1 and ROS2. As a minimal example, given the ROS2 Dockerfile above, we'll create the ROS1 equivalent below, and name the Dockerfile appropriately.
 
 ```dockerfile
-FROM ros:noetic
+FROM amd64/ros:noetic
 
 # install ros package
 RUN apt-get update && apt-get install -y \
